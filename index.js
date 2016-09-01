@@ -46,20 +46,52 @@ var QUESTIONS = [{
 //user comes back
     //IF  the length of the answeredQuestions array > 0
         //THEN shift.() the QUESTIONS in the length of the answeredQuestions array
+console.log(QUESTIONS.length);
 
 var state = {
-    currentQuestion: 0,
+    currentQuestion: 1,
     correctlyAnswered: []
 };
+var currentQuestionNumber = state.currentQuestion;
+var correctAnsweredQuestions = state.correctlyAnswered;
+
+//calculates total questions 
+var computeTotalQuestion = function(questions) {
+    console.log(questions);
+    return questions.length;
+}
+
+//passes the computerTotalQuestion results and changes the text of the element in HTML
+var renderTotalQuestions = function() {
+    $('.questions-total').text(computeTotalQuestion(QUESTIONS));
+}
+//renderTotalQuestions();
+
+//render question text
+var renderQuestion = function() {
+    var currentQuestionIndex = currentQuestionNumber - 1;
+    $('.question').text(QUESTIONS[currentQuestionIndex].text);
+    renderChoices(QUESTIONS[currentQuestionIndex]);
+}
+//renderQuestion(state, $('.question'));
+
+
+//render answer choices
+var renderChoices = function(questionArrayLocation) {
+    questionArrayLocation.answers.forEach(function(element, index){
+        $('.answers').append('<li value="' + index + '">' + element + '</li>');
+    })
+}
 
 //state modification function: move to the next question
 var nextQuestion = function(state) {
     state.currentQuestion += 1;
 };
 
+//INVOKE ONLY after they press press answer!!!
 var userSubmitAnswer = function(state, answered) {
     if(answered === true) {
-        state.correctlyAnswered.push(state.currentQuestion);
+        correctAnsweredQuestions.push(state.currentQuestion);
     }
 };
 
@@ -78,25 +110,43 @@ var renderCurrentScore = function(state, element) {
     element.text(computeScore(state));
 }
 //renderCurrentScore(state, $('.score'));
-
 var computeScore = function(state) {
-    return state.correctlyAnswered.length;
+    return correctAnsweredQuestions.length;
 }
 
 
 
-//render current question total
-//render applicationState: checks for: (called in event listener)
+//render display: checks for: (called in event listener)
     //IF currentQuestion < total#Questions
         //THEN show question div, hide results page div.
+var renderDisplay = function() {
+    //if state.currentQuestion > QUestions.length
+        //THEN $('.questions-page').hide();
+            // $('.results-page').show();
+    if(currentQuestionNumber > QUESTIONS.length) {
+        $('.questions-page').hide();
+        $('.results-page').show();
+    };
+};
 
-//render question text
+
+
+
+$(document).ready(function() {
+    renderQuestion($('.question'));
+});
+
+
+
+// ----------
 
 /*
 
 
 
 var answeredQuestions = [],
+
+
 
 
 
