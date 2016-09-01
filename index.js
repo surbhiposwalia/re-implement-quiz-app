@@ -1,17 +1,3 @@
-
-//save the index number of the correct & incorrect questions into an array called answeredQuestions
-//create a new property in the incoming array that will determine the correct/incorrect answer by the user (true/false)
-    //use this to create a score tracker, 
-        //if correctAnswer === true, create a counter for the score
-        //on the results page, show how many questions the user answered correctly
-//when user goes back to the website after closing, the question correct will be pushed to array
-    //correct/incorrect store as new property: true/false
-//user comes back
-    //IF  the length of the answeredQuestions array > 0
-        //THEN shift.() the QUESTIONS in the length of the answeredQuestions array
-
-
-
 var QUESTIONS = [{
     text: 'question 1',
     answers: [
@@ -48,13 +34,69 @@ var QUESTIONS = [{
         'Barely'
     ],
     answer: 3
-}],
+}];
 
-answeredQuestions = [],
+//save the index number of the correct & incorrect questions into an array called answeredQuestions
+//create a new property in the incoming array that will determine the correct/incorrect answer by the user (true/false)
+    //use this to create a score tracker, 
+        //if correctAnswer === true, create a counter for the score
+        //on the results page, show how many questions the user answered correctly
+//when user goes back to the website after closing, the question correct will be pushed to array
+    //correct/incorrect store as new property: true/false
+//user comes back
+    //IF  the length of the answeredQuestions array > 0
+        //THEN shift.() the QUESTIONS in the length of the answeredQuestions array
+
+var state = {
+    currentQuestion: 0,
+    correctlyAnswered: []
+};
+
+//state modification function: move to the next question
+var nextQuestion = function(state) {
+    state.currentQuestion += 1;
+};
+
+var userSubmitAnswer = function(state, answered) {
+    if(answered === true) {
+        state.correctlyAnswered.push(state.currentQuestion);
+    }
+};
+
+
+// User scenario:
+// User answers first question correctly:
+console.log(state);
+  userSubmitAnswer(state, true);
+  nextQuestion(state);
+console.log(state);
+
+// {  currentQuestion: 1, correctlyAnswered: [0] }
+
+//render current score: 
+var renderCurrentScore = function(state, element) {
+    element.text(computeScore(state));
+}
+//renderCurrentScore(state, $('.score'));
+
+var computeScore = function(state) {
+    return state.correctlyAnswered.length;
+}
 
 
 
+//render current question total
+//render applicationState: checks for: (called in event listener)
+    //IF currentQuestion < total#Questions
+        //THEN show question div, hide results page div.
 
+//render question text
+
+/*
+
+
+
+var answeredQuestions = [],
 
 
 
@@ -136,3 +178,4 @@ $(document).ready(function() {
     questionsTotalElement.text(QUESTIONS.length + answeredQuestions.length);
     setQuestion();
 });
+*/
