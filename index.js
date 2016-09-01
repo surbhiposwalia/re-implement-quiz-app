@@ -46,18 +46,17 @@ var QUESTIONS = [{
 //user comes back
     //IF  the length of the answeredQuestions array > 0
         //THEN shift.() the QUESTIONS in the length of the answeredQuestions array
-console.log(QUESTIONS.length);
 
 var state = {
     currentQuestion: 1,
     correctlyAnswered: []
 };
+
 var currentQuestionNumber = state.currentQuestion;
 var correctAnsweredQuestions = state.correctlyAnswered;
 
 //calculates total questions 
 var computeTotalQuestion = function(questions) {
-    console.log(questions);
     return questions.length;
 }
 
@@ -70,7 +69,8 @@ var renderTotalQuestions = function() {
 //render question text
 var renderQuestion = function() {
     var currentQuestionIndex = currentQuestionNumber - 1;
-    $('.question').text(QUESTIONS[currentQuestionIndex].text);
+    $('.question').html('')
+                  .text(QUESTIONS[currentQuestionIndex].text);
     renderChoices(QUESTIONS[currentQuestionIndex]);
 }
 //renderQuestion(state, $('.question'));
@@ -78,30 +78,29 @@ var renderQuestion = function() {
 
 //render answer choices
 var renderChoices = function(questionArrayLocation) {
+    $('.answer').html('');
     questionArrayLocation.answers.forEach(function(element, index){
         $('.answers').append('<li value="' + index + '">' + element + '</li>');
     })
 }
 
 //state modification function: move to the next question
-var nextQuestion = function(state) {
+var nextQuestion = function() {
     state.currentQuestion += 1;
 };
 
 //INVOKE ONLY after they press press answer!!!
-var userSubmitAnswer = function(state, answered) {
-    if(answered === true) {
+var userSubmitAnswer = function() {
         correctAnsweredQuestions.push(state.currentQuestion);
-    }
 };
 
 
 // User scenario:
 // User answers first question correctly:
-console.log(state);
-  userSubmitAnswer(state, true);
-  nextQuestion(state);
-console.log(state);
+// console.log(state);
+//   userSubmitAnswer(state, true);
+//   nextQuestion(state);
+// console.log(state);
 
 // {  currentQuestion: 1, correctlyAnswered: [0] }
 
@@ -133,7 +132,21 @@ var renderDisplay = function() {
 
 
 $(document).ready(function() {
-    renderQuestion($('.question'));
+    renderQuestion(); 
+    $('.answers li').on('click',function() {
+      if ($(this).val() === QUESTIONS[currentQuestionNumber].answer){
+        alert('bravo!!');       
+        userSubmitAnswer()
+        nextQuestion();
+        renderQuestion();
+console.log(state.currentQuestion);
+      }
+      else{
+            alert('Sorry!')
+      }
+    })
+
+
 });
 
 
